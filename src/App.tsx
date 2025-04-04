@@ -1,17 +1,9 @@
 import React from 'react';
-
-type Priority = 'low' | 'medium' | 'high';
-
-//Task Type
-type Task = {
-  id: number;
-  title: string;
-  isCompleted: boolean;
-  priority?: Priority;
-};
-
+import { Task } from './types';
+import TaskAdd from './TaskAdd';
 //Main App Component
 function App() {
+  console.log('App rendered');
   const [tasks, setTasks] = React.useState<Task[]>([
     {
       id: 1,
@@ -23,8 +15,6 @@ function App() {
 
   //Task Name State
   const [taskName, setTaskName] = React.useState('');
-
-  //Add Task Function
 
   function onAddTask() {
     const trimmedTaskName = taskName.trim();
@@ -44,23 +34,21 @@ function App() {
     ]);
     setTaskName('');
   }
+  function onInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter') {
+      onAddTask();
+    }
+  }
 
-  //Render
   return (
     <div>
       <h1>Tasks</h1>
-      <label htmlFor="task-input">Add a task</label>
-      <input
-        id="task-input"
-        value={taskName}
-        onChange={(e) => setTaskName(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            onAddTask();
-          }
-        }}
+      <TaskAdd
+        taskName={taskName}
+        setTaskName={setTaskName}
+        onInputKeyDown={onInputKeyDown}
+        onAddTask={onAddTask}
       />
-      <button onClick={onAddTask}>Add</button>
       <ul>
         {tasks.map((task, index) => (
           <li key={index}>{task.title}</li>
@@ -69,5 +57,5 @@ function App() {
     </div>
   );
 }
-//Export
+
 export default App;
