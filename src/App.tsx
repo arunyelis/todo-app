@@ -2,6 +2,7 @@ import React from 'react';
 
 type Priority = 'low' | 'medium' | 'high';
 
+//Task Type
 type Task = {
   id: number;
   title: string;
@@ -9,6 +10,7 @@ type Task = {
   priority?: Priority;
 };
 
+//Main App Component
 function App() {
   const [tasks, setTasks] = React.useState<Task[]>([
     {
@@ -19,28 +21,44 @@ function App() {
     },
   ]);
 
+  //Task Name State
   const [taskName, setTaskName] = React.useState('');
 
-  const onAddTask = () => {
+  //Add Task Function
+
+  function onAddTask() {
+    const trimmedTaskName = taskName.trim();
+    if (!trimmedTaskName) {
+      setTaskName('');
+      return;
+    }
+
     setTasks([
       ...tasks,
       {
         id: tasks.length + 1,
-        title: taskName,
+        title: trimmedTaskName,
         isCompleted: false,
         priority: 'low',
       },
     ]);
     setTaskName('');
-  };
+  }
+
+  //Render
   return (
     <div>
       <h1>Tasks</h1>
       <label htmlFor="task-input">Add a task</label>
       <input
+        id="task-input"
         value={taskName}
         onChange={(e) => setTaskName(e.target.value)}
-        id="task-input"
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            onAddTask();
+          }
+        }}
       />
       <button onClick={onAddTask}>Add</button>
       <ul>
@@ -51,5 +69,5 @@ function App() {
     </div>
   );
 }
-
+//Export
 export default App;
