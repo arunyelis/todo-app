@@ -1,22 +1,39 @@
-import React from 'react';
-import { Task } from './types';
-import TaskAdd from './TaskAdd';
-//Main App Component
+// src/App.tsx
+import React, { useState, useEffect } from 'react';
+import { Task, Priority } from './types';
+import styles from './styles/App.module.css';
+import TaskAdd from './components/TaskAdd';
+import TaskList from './components/TaskList';
+import FilterBar from './components/FilterBar';
+import { saveTasksToStorage, loadTasksFromStorage } from './utils/storage';
+
 function App() {
-  console.log('App rendered');
-  const [tasks, setTasks] = React.useState<Task[]>([
-    {
-      id: 1,
-      title: 'Complete the first task',
-      isCompleted: false,
-      priority: 'low',
-    },
-  ]);
+  // Load tasks from storage on initial render
+  const [tasks, setTasks] = useState<Task[]>(() => loadTasksFromStorage());
+  const [taskName, setTaskName] = useState('');
+  const [activeFilter, setActiveFilter] = useState('all'); // Default filter is 'all'
 
-  //Task Name State
-  const [taskName, setTaskName] = React.useState('');
+  // Save tasks to localStorage whenever they change
+  useEffect(() => {
+    saveTasksToStorage(tasks);
+  }, [tasks]);
 
-  function onAddTask() {
+  // Debug logs to monitor the state
+  console.log('Active filter:', activeFilter);
+  console.log('All tasks:', tasks);
+
+  // Apply filter to tasks
+  const filteredTasks = tasks.filter((task) => {
+    if (activeFilter === 'all') return true;
+    if (activeFilter === 'active') return !task.isCompleted;
+    if (activeFilter === 'completed') return task.isCompleted;
+    return true;
+  });
+
+  // Debug the filtered tasks
+  console.log('Filtered tasks:', filteredTasks);
+
+  function addTask(priority: Priority, dueDate?: Date) {
     const trimmedTaskName = taskName.trim();
     if (!trimmedTaskName) {
       setTaskName('');
@@ -26,34 +43,68 @@ function App() {
     setTasks([
       ...tasks,
       {
-        id: tasks.length + 1,
+        id: Date.now(),
         title: trimmedTaskName,
         isCompleted: false,
-        priority: 'low',
+        priority,
+        dueDate,
+        createdAt: new Date(),
       },
     ]);
     setTaskName('');
   }
-  function onInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === 'Enter') {
-      onAddTask();
+
+  function handleInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    // Only handle non-enter keys here
+    if (e.key !== 'Enter') {
+      // Any other key handling you need
     }
   }
 
+  function toggleTaskCompletion(id: number) {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, isCompleted: !task.isCompleted } : task,
+      ),
+    );
+  }
+
+  function deleteTask(id: number) {
+    setTasks(tasks.filter((task) => task.id !== id));
+  }
+
+  function updateTask(id: number, updates: Partial<Task>) {
+    setTasks(
+      tasks.map((task) => (task.id === id ? { ...task, ...updates } : task)),
+    );
+  }
+
   return (
-    <div>
-      <h1>Tasks</h1>
-      <TaskAdd
-        taskName={taskName}
-        setTaskName={setTaskName}
-        onInputKeyDown={onInputKeyDown}
-        onAddTask={onAddTask}
-      />
-      <ul>
-        {tasks.map((task, index) => (
-          <li key={index}>{task.title}</li>
-        ))}
-      </ul>
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <h1 className={styles.title}>Taskify</h1>
+      </header>
+
+      <main className={styles.main}>
+        <TaskAdd
+          taskName={taskName}
+          setTaskName={setTaskName}
+          onInputKeyDown={handleInputKeyDown}
+          onAddTask={addTask}
+        />
+
+        <FilterBar
+          activeFilter={activeFilter}
+          setActiveFilter={setActiveFilter}
+        />
+
+        <TaskList
+          tasks={filteredTasks} // Make sure we're passing the filtered tasks
+          onToggleComplete={toggleTaskCompletion}
+          onDeleteTask={deleteTask}
+          onUpdateTask={updateTask}
+        />
+      </main>
     </div>
   );
 }

@@ -1,0 +1,229 @@
+/* src/styles/TaskList.module.css */
+.container {
+  padding: 1rem;
+}
+
+.list {
+  list-style: none;
+}
+
+.emptyMessage {
+  text-align: center;
+  color: var(--color-gray-500);
+  padding: 2rem 0;
+}
+
+.item {
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.taskContent {
+  display: flex;
+  align-items: flex-start;
+  padding-right: 1rem;
+}
+
+.checkbox {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--color-primary);
+  border-radius: 50%;
+  background-color: white;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+  position: relative;
+}
+
+.checked {
+  background-color: var(--color-primary);
+}
+
+.checked::after {
+  content: '✓';
+  color: white;
+  font-size: 0.75rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.details {
+  flex: 1;
+}
+
+.title {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: var(--color-gray-500);
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+}
+
+.highPriority {
+  background-color: var(--color-priority-high);
+  color: var(--color-priority-high-text);
+  padding: 0.25rem 0.5rem;
+  border-radius: 100px;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+.mediumPriority {
+  background-color: var(--color-priority-medium);
+  color: var(--color-priority-medium-text);
+  padding: 0.25rem 0.5rem;
+  border-radius: 100px;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+.dueDate {
+  color: var(--color-gray-500);
+  font-size: 0.75rem;
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  color: var(--color-gray-400);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  opacity: 0.6;
+  padding: 0.25rem;
+}
+
+.deleteButton:hover {
+  color: #e53e3e;
+  opacity: 1;
+}
+
+/* src/styles/TaskList.module.css */
+/* Add these styles to your existing file */
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.editButton {
+  background: none;
+  border: none;
+  color: var(--color-gray-400);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  opacity: 0.6;
+  padding: 0.25rem;
+}
+
+.editButton:hover {
+  color: var(--color-primary);
+  opacity: 1;
+}
+
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+.editInput {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--border-radius-md);
+  font-size: 1rem;
+}
+
+.editInput:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-light);
+}
+
+.editOptions {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.editActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.saveButton {
+  padding: 0.5rem 1rem;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.saveButton:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.cancelButton {
+  padding: 0.5rem 1rem;
+  background-color: var(--color-gray-200);
+  color: var(--color-text);
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.cancelButton:hover {
+  background-color: var(--color-gray-300);
+}
+
+.editOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.editActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 768px) {
+  .editOptions {
+    flex-direction: row;
+    gap: 1.5rem;
+  }
+}
+
+.lowPriority {
+  background-color: var(--color-priority-low);
+  color: var(--color-priority-low-text);
+  padding: 0.25rem 0.5rem;
+  border-radius: 100px;
+  font-weight: 500;
+  font-size: 0.75rem;
+}

@@ -1,0 +1,76 @@
+/* src/styles/TaskAdd.module.css */
+.container {
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.inputGroup {
+  display: flex;
+  position: relative;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.input {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.75rem;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--border-radius-md);
+  font-size: 1rem;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-light);
+}
+
+.addButton {
+  padding: 0.75rem 1.25rem;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.addButton:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.voiceButton {
+  position: absolute;
+  right: 7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--color-gray-400);
+  transition: color 0.2s;
+}
+
+.voiceButton:hover {
+  color: var(--color-primary);
+}
+
+.optionsRow {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Media queries for responsive design */
+@media (min-width: 768px) {
+  .inputGroup {
+    flex-wrap: nowrap;
+  }
+
+  .optionsRow {
+    flex-direction: row;
+    gap: 1.5rem;
+  }
+}

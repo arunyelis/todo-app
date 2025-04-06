@@ -1,0 +1,34 @@
+/* src/styles/FilterBar.module.css */
+.container {
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.filters {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filter {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: none;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--color-gray-500);
+  transition: all 0.2s;
+}
+
+.filter:hover {
+  background-color: var(--color-gray-100);
+  color: var(--color-text);
+}
+
+.filter.active {
+  background-color: var(--color-primary);
+  color: white;
+  font-weight: bold; /* Make active filter bold */
+  transform: scale(1.05); /* Slightly enlarge the active button */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
