@@ -12,7 +12,7 @@ describe('App', () => {
     render(<App />);
 
     const input = screen.getByRole('textbox', { name: 'Add a task' });
-    const button = screen.getByRole('button', { name: 'Add' });
+    const button = screen.getByRole('button', { name: 'Add task' });
     await user.type(input, 'New task');
     await user.click(button);
 
@@ -31,7 +31,7 @@ describe('App', () => {
     const initialTasks = screen.queryAllByRole('listitem').length;
 
     const input = screen.getByRole('textbox', { name: 'Add a task' });
-    const button = screen.getByRole('button', { name: 'Add' });
+    const button = screen.getByRole('button', { name: 'Add task' });
 
     await user.type(input, '      ');
     await user.click(button);
@@ -48,16 +48,21 @@ describe('App', () => {
     const user = userEvent.setup();
     render(<App />);
 
+    // Get initial number of tasks
     const initialTasks = screen.queryAllByRole('listitem').length;
+
     const input = screen.getByRole('textbox', { name: 'Add a task' });
 
-    await user.type(input, 'New task{enter}');
+    // Use a unique task name to avoid conflicts with existing tasks
+    await user.type(input, 'Unique Task from Enter Key{enter}');
 
     await waitFor(() => {
       // Should have one more task than initial
       expect(screen.queryAllByRole('listitem')).toHaveLength(initialTasks + 1);
-      // Verify the new task is in the list
-      expect(screen.getByText('New task')).toBeInTheDocument();
+      // Verify the new task is in the list with unique name
+      expect(
+        screen.getByText('Unique Task from Enter Key'),
+      ).toBeInTheDocument();
     });
   });
 
@@ -67,7 +72,7 @@ describe('App', () => {
     render(<App />);
 
     const input = screen.getByRole('textbox', { name: 'Add a task' });
-    const button = screen.getByRole('button', { name: 'Add' });
+    const button = screen.getByRole('button', { name: 'Add task' });
 
     expect(input).toBeInTheDocument();
     expect(button).toBeInTheDocument();
@@ -79,14 +84,20 @@ describe('App', () => {
     const user = userEvent.setup();
     render(<App />);
 
+    // Count existing tasks
+    const initialTasksCount = screen.queryAllByText('New task').length;
+
     const input = screen.getByRole('textbox', { name: 'Add a task' });
-    const button = screen.getByRole('button', { name: 'Add' });
+    const button = screen.getByRole('button', { name: 'Add task' });
 
     await user.type(input, 'New task');
     await user.click(button);
 
     await waitFor(() => {
-      expect(screen.getByText('New task')).toBeInTheDocument();
+      // Check that we have one more task than before
+      expect(screen.queryAllByText('New task')).toHaveLength(
+        initialTasksCount + 1,
+      );
     });
   });
 });

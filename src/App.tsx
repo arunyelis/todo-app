@@ -6,21 +6,43 @@ import TaskAdd from './components/TaskAdd';
 import TaskList from './components/TaskList';
 import FilterBar from './components/FilterBar';
 import { saveTasksToStorage, loadTasksFromStorage } from './utils/storage';
+import { useVoiceInput } from './hooks/useVoiceInput';
 
 function App() {
   // Load tasks from storage on initial render
   const [tasks, setTasks] = useState<Task[]>(() => loadTasksFromStorage());
   const [taskName, setTaskName] = useState('');
   const [activeFilter, setActiveFilter] = useState('all'); // Default filter is 'all'
+  const { isListening, startListening } = useVoiceInput((text) => {
+    setTaskName(text);
+  });
+
+  const handleAddTask = (priority: Priority, dueDate?: Date) => {
+    if (taskName.trim()) {
+      const newTask: Task = {
+        id: Date.now(),
+        title: taskName,
+        isCompleted: false,
+        priority,
+        dueDate,
+        createdAt: new Date(),
+      };
+      setTasks([...tasks, newTask]);
+      setTaskName('');
+    }
+  };
 
   // Save tasks to localStorage whenever they change
   useEffect(() => {
     saveTasksToStorage(tasks);
+    // Debug logs for tasks changes
+    console.log('Tasks updated:', tasks);
   }, [tasks]);
 
-  // Debug logs to monitor the state
-  console.log('Active filter:', activeFilter);
-  console.log('All tasks:', tasks);
+  // Debug logs for filter changes
+  useEffect(() => {
+    console.log('Active filter changed:', activeFilter);
+  }, [activeFilter]);
 
   // Apply filter to tasks
   const filteredTasks = tasks.filter((task) => {
@@ -30,34 +52,14 @@ function App() {
     return true;
   });
 
-  // Debug the filtered tasks
-  console.log('Filtered tasks:', filteredTasks);
-
-  function addTask(priority: Priority, dueDate?: Date) {
-    const trimmedTaskName = taskName.trim();
-    if (!trimmedTaskName) {
-      setTaskName('');
-      return;
-    }
-
-    setTasks([
-      ...tasks,
-      {
-        id: Date.now(),
-        title: trimmedTaskName,
-        isCompleted: false,
-        priority,
-        dueDate,
-        createdAt: new Date(),
-      },
-    ]);
-    setTaskName('');
-  }
+  // Debug logs for filtered tasks
+  useEffect(() => {
+    console.log('Filtered tasks:', filteredTasks);
+  }, [filteredTasks]);
 
   function handleInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    // Only handle non-enter keys here
-    if (e.key !== 'Enter') {
-      // Any other key handling you need
+    if (e.key === 'Enter' && taskName.trim()) {
+      handleAddTask('low');
     }
   }
 
@@ -90,7 +92,9 @@ function App() {
           taskName={taskName}
           setTaskName={setTaskName}
           onInputKeyDown={handleInputKeyDown}
-          onAddTask={addTask}
+          onAddTask={handleAddTask}
+          onStartVoice={startListening}
+          isListening={isListening}
         />
 
         <FilterBar

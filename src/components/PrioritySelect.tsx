@@ -1,5 +1,4 @@
 // src/components/PrioritySelect.tsx
-import React from 'react';
 import { Priority } from '../types';
 import styles from '../styles/PrioritySelect.module.css';
 

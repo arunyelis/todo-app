@@ -11,6 +11,8 @@ type TaskAddProps = {
   setTaskName: (taskName: string) => void;
   onInputKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   onAddTask: (priority: Priority, dueDate?: Date) => void;
+  onStartVoice: () => void;
+  isListening: boolean;
 };
 
 export default function TaskAdd({
@@ -18,6 +20,8 @@ export default function TaskAdd({
   setTaskName,
   onInputKeyDown,
   onAddTask,
+  onStartVoice,
+  isListening,
 }: TaskAddProps) {
   const [priority, setPriority] = useState<Priority>('low');
   const [dueDate, setDueDate] = useState<Date | undefined>(undefined);
@@ -55,7 +59,11 @@ export default function TaskAdd({
         >
           <PlusIcon /> Add
         </button>
-        <button className={styles.voiceButton} aria-label="Use voice input">
+        <button
+          className={`${styles.voiceButton} ${isListening ? styles.listening : ''}`}
+          aria-label={isListening ? 'Listening...' : 'Use voice input'}
+          onClick={onStartVoice}
+        >
           <MicrophoneIcon />
         </button>
       </div>

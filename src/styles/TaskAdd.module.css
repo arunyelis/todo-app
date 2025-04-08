@@ -9,15 +9,20 @@
   position: relative;
   flex-wrap: wrap;
   gap: 0.5rem;
+  align-items: center;
 }
 
 .input {
   flex: 1;
   min-width: 200px;
-  padding: 0.75rem;
+  padding: 0.75rem; /* Simplify padding */
+  padding-right: 3rem; /* Add specific right padding to account for voice button */
   border: 1px solid var(--color-gray-200);
   border-radius: var(--border-radius-md);
   font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .input:focus {
@@ -34,6 +39,9 @@
   border-radius: var(--border-radius-md);
   font-weight: 600;
   transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .addButton:hover {
@@ -42,18 +50,49 @@
 
 .voiceButton {
   position: absolute;
-  right: 7rem;
+  right: 7rem; /* Adjust based on your add button width */
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
-  font-size: 1.25rem;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  transition: all 0.2s ease;
   color: var(--color-gray-400);
-  transition: color 0.2s;
+  background-color: transparent;
 }
 
 .voiceButton:hover {
   color: var(--color-primary);
+  background-color: var(--color-gray-100);
+}
+
+.voiceButton.listening {
+  color: var(--color-primary);
+  background-color: var(--color-primary-light);
+  animation: pulse 1.5s infinite;
+}
+
+.voiceButton.listening:hover {
+  background-color: var(--color-primary-lighter);
+}
+
+@keyframes pulse {
+  0% {
+    transform: translateY(-50%) scale(1);
+  }
+  50% {
+    transform: translateY(-50%) scale(1.1);
+  }
+  100% {
+    transform: translateY(-50%) scale(1);
+  }
 }
 
 .optionsRow {
